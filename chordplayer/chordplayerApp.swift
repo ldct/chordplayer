@@ -11,7 +11,8 @@ import SwiftUI
 struct chordplayerApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            let settingsModel = SettingsModel.defaultSettingsModel
+            ContentView(settings: settingsModel)
         }
     }
 }

@@ -14,6 +14,13 @@
 		93A243A3295B27B20062DA37 /* chordplayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A243A2295B27B20062DA37 /* chordplayerTests.swift */; };
 		93A243AD295B27B20062DA37 /* chordplayerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A243AC295B27B20062DA37 /* chordplayerUITests.swift */; };
 		93A243AF295B27B20062DA37 /* chordplayerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A243AE295B27B20062DA37 /* chordplayerUITestsLaunchTests.swift */; };
+		93A243C4295BF4B20062DA37 /* KeyShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A243C3295BF4B20062DA37 /* KeyShape.swift */; };
+		93A243C6295BF4E50062DA37 /* PianoKeyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A243C5295BF4E50062DA37 /* PianoKeyModel.swift */; };
+		93A243C9295BF4FE0062DA37 /* PianoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A243C7295BF4FE0062DA37 /* PianoModel.swift */; };
+		93A243CA295BF4FE0062DA37 /* PianoKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A243C8295BF4FE0062DA37 /* PianoKeyView.swift */; };
+		93A243CE295BF60C0062DA37 /* PianoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A243CD295BF60C0062DA37 /* PianoView.swift */; };
+		93A243D0295C09FB0062DA37 /* Piano.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A243CF295C09FB0062DA37 /* Piano.swift */; };
+		93A243D2295C0E200062DA37 /* MusicTheory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A243D1295C0E200062DA37 /* MusicTheory.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +52,13 @@
 		93A243A8295B27B20062DA37 /* chordplayerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chordplayerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		93A243AC295B27B20062DA37 /* chordplayerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chordplayerUITests.swift; sourceTree = "<group>"; };
 		93A243AE295B27B20062DA37 /* chordplayerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chordplayerUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		93A243C3295BF4B20062DA37 /* KeyShape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyShape.swift; sourceTree = "<group>"; };
+		93A243C5295BF4E50062DA37 /* PianoKeyModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PianoKeyModel.swift; sourceTree = "<group>"; };
+		93A243C7295BF4FE0062DA37 /* PianoModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PianoModel.swift; path = ../../../PianoSample/PianoSample/PianoModel.swift; sourceTree = "<group>"; };
+		93A243C8295BF4FE0062DA37 /* PianoKeyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PianoKeyView.swift; path = ../../../PianoSample/PianoSample/PianoKeyView.swift; sourceTree = "<group>"; };
+		93A243CD295BF60C0062DA37 /* PianoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PianoView.swift; sourceTree = "<group>"; };
+		93A243CF295C09FB0062DA37 /* Piano.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Piano.swift; sourceTree = "<group>"; };
+		93A243D1295C0E200062DA37 /* MusicTheory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicTheory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,8 +109,15 @@
 		93A2438F295B27B10062DA37 /* chordplayer */ = {
 			isa = PBXGroup;
 			children = (
+				93A243D1295C0E200062DA37 /* MusicTheory.swift */,
+				93A243CF295C09FB0062DA37 /* Piano.swift */,
+				93A243C8295BF4FE0062DA37 /* PianoKeyView.swift */,
+				93A243C7295BF4FE0062DA37 /* PianoModel.swift */,
+				93A243C5295BF4E50062DA37 /* PianoKeyModel.swift */,
+				93A243C3295BF4B20062DA37 /* KeyShape.swift */,
 				93A24390295B27B10062DA37 /* chordplayerApp.swift */,
 				93A24392295B27B10062DA37 /* ContentView.swift */,
+				93A243CD295BF60C0062DA37 /* PianoView.swift */,
 				93A24394295B27B20062DA37 /* Assets.xcassets */,
 				93A24396295B27B20062DA37 /* chordplayer.entitlements */,
 				93A24397295B27B20062DA37 /* Preview Content */,
@@ -260,7 +281,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				93A24393295B27B10062DA37 /* ContentView.swift in Sources */,
+				93A243D2295C0E200062DA37 /* MusicTheory.swift in Sources */,
+				93A243C9295BF4FE0062DA37 /* PianoModel.swift in Sources */,
+				93A243CA295BF4FE0062DA37 /* PianoKeyView.swift in Sources */,
 				93A24391295B27B10062DA37 /* chordplayerApp.swift in Sources */,
+				93A243CE295BF60C0062DA37 /* PianoView.swift in Sources */,
+				93A243D0295C09FB0062DA37 /* Piano.swift in Sources */,
+				93A243C4295BF4B20062DA37 /* KeyShape.swift in Sources */,
+				93A243C6295BF4E50062DA37 /* PianoKeyModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

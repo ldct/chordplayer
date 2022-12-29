@@ -73,7 +73,7 @@ class PianoSound {
         }
     }
 
-    private func convert(keyInfo: KeyInfo) -> UInt8 {
+    public func convert(keyInfo: KeyInfo) -> UInt8 {
         if keyInfo.color == .white {
             return UInt8(whiteNotes[keyInfo.n])
         } else {
@@ -81,21 +81,36 @@ class PianoSound {
         }
     }
 
+    func playMajorChord(rootPitch: Int) {
+        self.unitSampler.startNote(UInt8(rootPitch), withVelocity: 80, onChannel: 0)
+        self.unitSampler.startNote(UInt8(rootPitch)+4, withVelocity: 80, onChannel: 0)
+        self.unitSampler.startNote(UInt8(rootPitch)+7, withVelocity: 80, onChannel: 0)
+    }
+    
+    func stopMajorChord(rootPitch: Int) {
+        self.unitSampler.stopNote(UInt8(rootPitch), onChannel: 0)
+        self.unitSampler.stopNote(UInt8(rootPitch)+4, onChannel: 0)
+        self.unitSampler.stopNote(UInt8(rootPitch)+7, onChannel: 0)
+    }
+    
+    
+    func playMinorChord(rootPitch: Int) {
+        self.unitSampler.startNote(UInt8(rootPitch), withVelocity: 80, onChannel: 0)
+        self.unitSampler.startNote(UInt8(rootPitch)+3, withVelocity: 80, onChannel: 0)
+        self.unitSampler.startNote(UInt8(rootPitch)+7, withVelocity: 80, onChannel: 0)
+    }
+    
+    func stopMinorChord(rootPitch: Int) {
+        self.unitSampler.stopNote(UInt8(rootPitch), onChannel: 0)
+        self.unitSampler.stopNote(UInt8(rootPitch)+3, onChannel: 0)
+        self.unitSampler.stopNote(UInt8(rootPitch)+7, onChannel: 0)
+    }
+    
+    
     func play(keyInfo: KeyInfo) {
         let note = convert(keyInfo: keyInfo)
         self.unitSampler.startNote(note, withVelocity: 80, onChannel: 0)
     }
-
-//    func fadeOut(note: UInt8, pressure: UInt8 = 80) {
-//        if 0 < pressure {
-//            self.unitSampler.sendPressure(forKey: note, withValue: pressure - 10, onChannel: 0)
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-//                self.fadeOut(note: note, pressure: pressure - 10)
-//            }
-//        } else {
-//            self.unitSampler.stopNote(note, onChannel: 0)
-//        }
-//    }
 
     func stop(keyInfo: KeyInfo) {
         let note = convert(keyInfo: keyInfo)
@@ -106,10 +121,9 @@ class PianoSound {
 
 
 struct PianoKeyView: View {
-
     let model: PianoKeyModel
     @Binding var location: CGPoint
-
+    
     init(model: PianoKeyModel, location: Binding<CGPoint>) {
         self.model = model
         _location = location
@@ -159,6 +173,7 @@ class SoundModel {
 
     func called(keyInfo: KeyInfo) {
         print(keyInfo.description)
+//        print(piano.convert(keyInfo: keyInfo))
         if keyInfo.isPressed {
             piano.play(keyInfo: keyInfo)
         } else {

@@ -1,9 +1,16 @@
 import SwiftUI
 
 struct SettingsModel {
-    var selectedKey: MusicalKey
+    var selectedRoot: MusicalNote = MusicalKey.defaultKey.rootNote
+    var tonality: Modality = .major
     
-    static let defaultSettingsModel = SettingsModel(selectedKey: MusicalKey.defaultKey)
+    var showDiminishedInMajor: Bool = false
+    
+    var selectedKey: MusicalKey {
+        MusicalKey(rootNote: selectedRoot, modality: tonality)
+    }
+    
+    static let defaultSettingsModel = SettingsModel()
 }
 
 struct Settings: View {
@@ -11,10 +18,17 @@ struct Settings: View {
     
     var body: some View {
         Form {
-            Picker("key", selection: $model.selectedKey) {
-                ForEach(allKeys) { key in
-                    Text(key.toString).tag(key)
+            Picker("Key (root)", selection: $model.selectedRoot) {
+                ForEach(allNotes) { key in
+                    Text(key.debugDescription).tag(key)
                 }
+            }
+            Picker("Tonality", selection: $model.tonality) {
+                Text("Major").tag(Modality.major)
+                Text("Minor").tag(Modality.minor)
+            }
+            if model.tonality == .major {
+                Toggle("Show diminished chord", isOn: $model.showDiminishedInMajor)
             }
         }
     }
@@ -22,18 +36,53 @@ struct Settings: View {
 
 struct ContentView: View {
     @State var settings: SettingsModel
+    
+    @State var currentTriad: MusicalTriad? {
+        didSet {
+            if let oldValue {
+                if oldValue.modality == .major {
+                    piano.stopMajorChord(rootPitch: 60 + oldValue.rootNote.asPitch)
+                } else if oldValue.modality == .minor {
+                    piano.stopMinorChord(rootPitch: 60 + oldValue.rootNote.asPitch)
+                }
+            }
+            if let newValue = currentTriad {
+                if newValue.modality == .major {
+                    piano.playMajorChord(rootPitch: 60 + newValue.rootNote.asPitch)
+                } else if newValue.modality == .minor {
+                    piano.playMinorChord(rootPitch: 60 + newValue.rootNote.asPitch)
+                }
+            }
+        }
+    }
 
-    func makeButton(_ text: String) -> some View  {
-        let ret = Button(text) {
-        }.frame(width: 100, height: 100).background(.yellow).cornerRadius(5)
+    let piano = PianoSound()
 
+    
+    func makeButton(_ triad: MusicalTriad) -> some View  {
+        let ret = Button(action: {
+            if currentTriad == triad {
+                currentTriad = nil
+            } else {
+                currentTriad = triad
+            }
+        }) {
+            Text(triad.debugDescription)
+                .frame(width: 100, height: 100)
+                .background((triad == currentTriad ? .green : .yellow))
+                .cornerRadius(5)
+        }
         return ret
     }
     
-    var chords: [String] {
-        notes_in_major_key(rootNote: settings.selectedKey.rootNote).map {
-            "\($0)"
+    var chords: [MusicalTriad] {
+        var ret = triads_in_major_key(rootNote: settings.selectedKey.rootNote)
+        if !settings.showDiminishedInMajor {
+            ret = ret.filter {
+                $0.modality != .diminished
+            }
         }
+        return ret
     }
 
     var body: some View {
@@ -42,10 +91,29 @@ struct ContentView: View {
                     .navigationDestination(for: String.self) { value in
                         Settings(model: $settings)
                     }
-                PianoView()
+            PianoView(selectedRoot: $settings.selectedRoot)
                 HStack {
+                    
+                    
+                    
+                    Button(action: {
+                    }) {
+                        Text("<")
+                            .frame(width: 40, height: 100)
+                            .background(.yellow)
+                            .cornerRadius(5)
+                    }
+                                    
                     ForEach(chords.indices, id: \.self) {
                         makeButton(chords[$0])
+                    }
+                    
+                    Button(action: {
+                    }) {
+                        Text(">")
+                            .frame(width: 40, height: 100)
+                            .background(.yellow)
+                            .cornerRadius(5)
                     }
                 }
         }

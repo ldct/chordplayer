@@ -29,7 +29,9 @@ enum MusicalLetter: Int, CaseIterable {
     }
 }
 
-public struct MusicalNote: Hashable, CustomDebugStringConvertible {
+public struct MusicalNote: Hashable, Identifiable, CustomDebugStringConvertible {
+    public var id: Self { self }
+
     let letter: MusicalLetter
     let accidentals: Int
     
@@ -48,6 +50,17 @@ public struct MusicalNote: Hashable, CustomDebugStringConvertible {
     var asPitch: Int {
         letter.rawValue + accidentals
     }
+}
+
+public struct MusicalTriad: Hashable, CustomDebugStringConvertible {
+    public var debugDescription: String {
+        "\(rootNote) \(modality)"
+    }
+    
+    let rootNote: MusicalNote
+    let modality: Modality
+    
+    
 }
 
 extension RangeReplaceableCollection {
@@ -85,9 +98,20 @@ func notes_in_major_key(rootNote: MusicalNote) -> [MusicalNote] {
     }
 }
 
+
+func triads_in_major_key(rootNote: MusicalNote) -> [MusicalTriad] {
+    let notes = notes_in_major_key(rootNote: rootNote)
+    let modalities: [Modality] = [.major, .minor, .minor, .major, .major, .minor, .diminished]
+    
+    return zip(notes, modalities).map { r in
+        MusicalTriad(rootNote: r.0, modality: r.1)
+    }
+}
+
 enum Modality: String {
-    case major
-    case minor
+    case major = ""
+    case minor = "m"
+    case diminished = "dim"
 }
 
 struct MusicalKey: Hashable, Identifiable {
@@ -103,8 +127,38 @@ struct MusicalKey: Hashable, Identifiable {
     static let defaultKey = MusicalKey(rootNote: MusicalNote(letter: .C, accidentals: 0), modality: .major)
 }
 
+let allNotes: [MusicalNote] = MusicalLetter.allCases.flatMap { note in
+    [
+        MusicalNote(letter: note, accidentals: 0),
+        MusicalNote(letter: note, accidentals: 1),
+        MusicalNote(letter: note, accidentals: -1)
+    ]
+}
+
+let twelveNotes: [MusicalNote] = [
+    MusicalNote(letter: .C, accidentals: 0),
+    MusicalNote(letter: .D, accidentals: -1),
+    MusicalNote(letter: .D, accidentals: 0),
+    MusicalNote(letter: .E, accidentals: -1),
+    MusicalNote(letter: .E, accidentals: 0),
+    MusicalNote(letter: .F, accidentals: 0),
+    MusicalNote(letter: .F, accidentals: 1),
+    MusicalNote(letter: .G, accidentals: 0),
+    MusicalNote(letter: .A, accidentals: -1),
+    MusicalNote(letter: .A, accidentals: 0),
+    MusicalNote(letter: .B, accidentals: -1),
+    MusicalNote(letter: .B, accidentals: 0),
+
+
+
+
+]
+
 let allKeys: [MusicalKey] = MusicalLetter.allCases.flatMap { note in
     [
         MusicalKey(rootNote: MusicalNote(letter: note, accidentals: 0), modality: .major),
+        MusicalKey(rootNote: MusicalNote(letter: note, accidentals: 1), modality: .major),
+        MusicalKey(rootNote: MusicalNote(letter: note, accidentals: -1), modality: .major),
+
     ]
 }

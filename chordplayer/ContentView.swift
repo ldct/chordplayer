@@ -35,7 +35,13 @@ struct Settings: View {
 }
 
 struct ContentView: View {
+    private let rotationChangePublisher = NotificationCenter.default
+        .publisher(for: UIDevice.orientationDidChangeNotification)
+    @State private var isOrientationLocked = false
+
     @State var settings: SettingsModel
+    
+    @State var keyChangeAllowed: Bool = true
     
     @State var currentTriad: MusicalTriad? {
         didSet {
@@ -68,7 +74,7 @@ struct ContentView: View {
             }
         }) {
             Text(triad.debugDescription)
-                .frame(width: 100, height: 100)
+                .frame(width: 80, height: 80)
                 .background((triad == currentTriad ? .green : .yellow))
                 .cornerRadius(5)
         }
@@ -87,15 +93,18 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack {
+            HStack {
                 NavigationLink("settings", value: "settings")
                     .navigationDestination(for: String.self) { value in
                         Settings(model: $settings)
                     }
-            PianoView(selectedRoot: $settings.selectedRoot)
+                Toggle("", isOn: $keyChangeAllowed)
+
+            }
+
                 HStack {
-                    
-                    
-                    
+            
+            
                     Button(action: {
                     }) {
                         Text("<")
@@ -103,11 +112,10 @@ struct ContentView: View {
                             .background(.yellow)
                             .cornerRadius(5)
                     }
-                                    
-                    ForEach(chords.indices, id: \.self) {
-                        makeButton(chords[$0])
+                    ForEach(chords) {
+                        makeButton($0)
+                            .animation(Animation.default.speed(0.8))
                     }
-                    
                     Button(action: {
                     }) {
                         Text(">")
@@ -116,8 +124,8 @@ struct ContentView: View {
                             .cornerRadius(5)
                     }
                 }
+            PianoView(selectedRoot: $settings.selectedRoot, keyChangeAllowed: $keyChangeAllowed)
         }
-
     }
 }
 

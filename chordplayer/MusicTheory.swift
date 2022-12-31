@@ -52,7 +52,7 @@ public struct MusicalNote: Hashable, Identifiable, CustomDebugStringConvertible 
     }
 }
 
-public struct MusicalTriad: Hashable, CustomDebugStringConvertible {
+public struct MusicalTriad: Hashable, Identifiable, CustomDebugStringConvertible {
     public var debugDescription: String {
         "\(rootNote) \(modality)"
     }
@@ -60,7 +60,9 @@ public struct MusicalTriad: Hashable, CustomDebugStringConvertible {
     let rootNote: MusicalNote
     let modality: Modality
     
-    
+    public var id: String {
+        debugDescription
+    }
 }
 
 extension RangeReplaceableCollection {

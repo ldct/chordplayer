@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		936EF6FD295EE61B007F5E4F /* shapetest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936EF6FC295EE61B007F5E4F /* shapetest.swift */; };
 		93A24391295B27B10062DA37 /* chordplayerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A24390295B27B10062DA37 /* chordplayerApp.swift */; };
 		93A24393295B27B10062DA37 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A24392295B27B10062DA37 /* ContentView.swift */; };
 		93A24395295B27B20062DA37 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93A24394295B27B20062DA37 /* Assets.xcassets */; };
@@ -41,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		936EF6FC295EE61B007F5E4F /* shapetest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = shapetest.swift; sourceTree = "<group>"; };
 		93A2438D295B27B10062DA37 /* chordplayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chordplayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		93A24390295B27B10062DA37 /* chordplayerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chordplayerApp.swift; sourceTree = "<group>"; };
 		93A24392295B27B10062DA37 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 		93A24384295B27B10062DA37 = {
 			isa = PBXGroup;
 			children = (
+				936EF6FC295EE61B007F5E4F /* shapetest.swift */,
 				93A2438F295B27B10062DA37 /* chordplayer */,
 				93A243A1295B27B20062DA37 /* chordplayerTests */,
 				93A243AB295B27B20062DA37 /* chordplayerUITests */,
@@ -281,6 +284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				93A24393295B27B10062DA37 /* ContentView.swift in Sources */,
+				936EF6FD295EE61B007F5E4F /* shapetest.swift in Sources */,
 				93A243D2295C0E200062DA37 /* MusicTheory.swift in Sources */,
 				93A243C9295BF4FE0062DA37 /* PianoModel.swift in Sources */,
 				93A243CA295BF4FE0062DA37 /* PianoKeyView.swift in Sources */,

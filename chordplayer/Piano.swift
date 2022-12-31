@@ -19,6 +19,14 @@ class PianoSound {
     init(volume: Float = 0.5) {
         whiteNotes = makeWhiteNotes(14)
         blackNotes = mekeBlackNotes(13)
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers])
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+            print("ERROR")
+        }
+        
         audioEngine.mainMixerNode.volume = volume
         audioEngine.attach(unitSampler)
         audioEngine.connect(unitSampler, to: audioEngine.mainMixerNode, format: nil)
@@ -172,8 +180,6 @@ class SoundModel {
     let piano = PianoSound()
 
     func called(keyInfo: KeyInfo) {
-        print(keyInfo.description)
-//        print(piano.convert(keyInfo: keyInfo))
         if keyInfo.isPressed {
             piano.play(keyInfo: keyInfo)
         } else {

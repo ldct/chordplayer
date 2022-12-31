@@ -15,6 +15,8 @@ struct PianoView: View {
     
     @Binding var selectedRoot: MusicalNote
     
+    @Binding var keyChangeAllowed: Bool
+    
     let model = SoundModel()
 
     var body: some View {
@@ -28,10 +30,14 @@ struct PianoView: View {
         
         let tap = TapGesture(count: 2)
             .onEnded({
+                guard keyChangeAllowed else {
+                    return
+                }
+                keyChangeAllowed = false
                 if let lastHitKeyInfo {
                     let absolutePitch = PianoSound().convert(keyInfo: lastHitKeyInfo)
                     
-                    var pitchClass = (absolutePitch - 60) % 12
+                    var pitchClass = (Int(absolutePitch) - 60) % 12
                     pitchClass += 12
                     pitchClass %= 12
 

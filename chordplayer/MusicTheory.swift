@@ -54,7 +54,7 @@ public struct MusicalNote: Hashable, Identifiable, CustomDebugStringConvertible 
 
 public struct MusicalTriad: Hashable, Identifiable, CustomDebugStringConvertible {
     public var debugDescription: String {
-        "\(rootNote) \(modality)"
+        "\(rootNote) \(modality.rawValue)"
     }
     
     let rootNote: MusicalNote
@@ -109,6 +109,26 @@ func triads_in_major_key(rootNote: MusicalNote) -> [MusicalTriad] {
         MusicalTriad(rootNote: r.0, modality: r.1)
     }
 }
+
+
+func chromatic_triads_in_major_key(rootNote: MusicalNote) -> [[MusicalTriad]] {
+    let notes = notes_in_major_key(rootNote: rootNote)
+    
+    let major: (Modality, Modality) = (.major, .minor)
+    let minor: (Modality, Modality) = (.minor, .major)
+    let diminished: (Modality, Modality) = (.diminished, .minor)
+    
+    
+    let modalities: [(Modality, Modality)] = [major, minor, minor, major, major, minor, diminished]
+    
+    return zip(notes, modalities).map { r in
+        [
+            MusicalTriad(rootNote: r.0, modality: r.1.0),
+            MusicalTriad(rootNote: r.0, modality: r.1.1)
+        ]
+    }
+}
+
 
 enum Modality: String {
     case major = ""

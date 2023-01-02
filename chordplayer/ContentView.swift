@@ -74,20 +74,20 @@ struct ContentView: View {
             }
         }) {
             Text(triad.debugDescription)
-                .frame(width: 80, height: 80)
+                .frame(width: 80, height: 40)
                 .background((triad == currentTriad ? .green : .yellow))
                 .cornerRadius(5)
         }
         return ret
     }
     
-    var chords: [MusicalTriad] {
-        var ret = triads_in_major_key(rootNote: settings.selectedKey.rootNote)
-        if !settings.showDiminishedInMajor {
-            ret = ret.filter {
-                $0.modality != .diminished
-            }
-        }
+    var chords: [[MusicalTriad]] {
+        var ret = chromatic_triads_in_major_key(rootNote: settings.selectedKey.rootNote)
+//        if !settings.showDiminishedInMajor {
+//            ret = ret.filter {
+//                $0.modality != .diminished
+//            }
+//        }
         return ret
     }
 
@@ -112,9 +112,13 @@ struct ContentView: View {
                             .background(.yellow)
                             .cornerRadius(5)
                     }
-                    ForEach(chords) {
-                        makeButton($0)
-                            .animation(Animation.default.speed(0.8))
+                    ForEach(chords.indices) { idx in
+                        let chord_pair = chords[idx]
+                        VStack {
+                            ForEach(chord_pair) { chord in
+                                makeButton(chord)
+                            }
+                        }
                     }
                     Button(action: {
                     }) {

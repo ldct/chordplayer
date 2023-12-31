@@ -18,7 +18,7 @@ struct Settings: View {
     
     var body: some View {
         Form {
-            Picker("Key (root)", selection: $model.selectedRoot) {
+            Picker("Tonic (root note of key)", selection: $model.selectedRoot) {
                 ForEach(allNotes) { key in
                     Text(key.debugDescription).tag(key)
                 }
@@ -27,9 +27,9 @@ struct Settings: View {
                 Text("Major").tag(Modality.major)
                 Text("Minor").tag(Modality.minor)
             }
-            if model.tonality == .major {
-                Toggle("Show diminished chord", isOn: $model.showDiminishedInMajor)
-            }
+//            if model.tonality == .major {
+//                Toggle("Show diminished chord", isOn: $model.showDiminishedInMajor)
+//            }
         }
     }
 }
@@ -64,8 +64,7 @@ struct ContentView: View {
 
     let piano = PianoSound()
 
-    
-    func makeButton(_ triad: MusicalTriad) -> some View  {
+    func makeButton(_ triad: MusicalTriad, height: CGFloat) -> some View  {
         let ret = Button(action: {
             if currentTriad == triad {
                 currentTriad = nil
@@ -74,7 +73,7 @@ struct ContentView: View {
             }
         }) {
             Text(triad.debugDescription)
-                .frame(width: 80, height: 40)
+                .frame(width: 80, height: height)
                 .background((triad == currentTriad ? .green : .yellow))
                 .cornerRadius(5)
         }
@@ -102,32 +101,19 @@ struct ContentView: View {
 
             }
 
-                HStack {
-            
-            
-                    Button(action: {
-                    }) {
-                        Text("<")
-                            .frame(width: 40, height: 100)
-                            .background(.yellow)
-                            .cornerRadius(5)
-                    }
-                    ForEach(chords.indices) { idx in
-                        let chord_pair = chords[idx]
-                        VStack {
-                            ForEach(chord_pair) { chord in
-                                makeButton(chord)
-                            }
-                        }
-                    }
-                    Button(action: {
-                    }) {
-                        Text(">")
-                            .frame(width: 40, height: 100)
-                            .background(.yellow)
-                            .cornerRadius(5)
-                    }
+            HStack {
+                ForEach(chords.indices) { idx in
+                    let chord_pair = chords[idx]
+                    makeButton(chord_pair[0], height: 40)
                 }
+            }
+            
+            HStack {
+                ForEach(chords.indices) { idx in
+                    let chord_pair = chords[idx]
+                    makeButton(chord_pair[1], height: 20)
+                }
+            }
             PianoView(selectedRoot: $settings.selectedRoot, keyChangeAllowed: $keyChangeAllowed)
         }
     }

@@ -1,39 +1,5 @@
 import SwiftUI
 
-struct SettingsModel {
-    var selectedRoot: MusicalNote = MusicalKey.defaultKey.rootNote
-    var tonality: Modality = .major
-    
-    var showDiminishedInMajor: Bool = false
-    
-    var selectedKey: MusicalKey {
-        MusicalKey(rootNote: selectedRoot, modality: tonality)
-    }
-    
-    static let defaultSettingsModel = SettingsModel()
-}
-
-struct Settings: View {
-    @Binding var model: SettingsModel
-    
-    var body: some View {
-        Form {
-            Picker("Tonic (root note of key)", selection: $model.selectedRoot) {
-                ForEach(allNotes) { key in
-                    Text(key.debugDescription).tag(key)
-                }
-            }
-            Picker("Tonality", selection: $model.tonality) {
-                Text("Major").tag(Modality.major)
-                Text("Minor").tag(Modality.minor)
-            }
-//            if model.tonality == .major {
-//                Toggle("Show diminished chord", isOn: $model.showDiminishedInMajor)
-//            }
-        }
-    }
-}
-
 struct ContentView: View {
     private let rotationChangePublisher = NotificationCenter.default
         .publisher(for: UIDevice.orientationDidChangeNotification)
@@ -81,12 +47,7 @@ struct ContentView: View {
     }
     
     var chords: [[MusicalTriad]] {
-        var ret = chromatic_triads_in_major_key(rootNote: settings.selectedKey.rootNote)
-//        if !settings.showDiminishedInMajor {
-//            ret = ret.filter {
-//                $0.modality != .diminished
-//            }
-//        }
+        var ret = chromatic_triads_in_key(key: settings.selectedKey)
         return ret
     }
 

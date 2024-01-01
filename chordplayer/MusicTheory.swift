@@ -100,15 +100,45 @@ func notes_in_major_key(rootNote: MusicalNote) -> [MusicalNote] {
     }
 }
 
-func chromatic_triads_in_major_key(rootNote: MusicalNote) -> [[MusicalTriad]] {
-    let notes = notes_in_major_key(rootNote: rootNote)
+func notes_in_minor_key(rootNote: MusicalNote) -> [MusicalNote] {
+    let rootPitch = rootNote.asPitch
+    let pitches = [rootPitch, rootPitch+2, rootPitch+3, rootPitch+5, rootPitch+7, rootPitch+8, rootPitch+10].map { $0 }
+        
+    var letters = MusicalLetter.allCases
+    
+    while letters.first != rootNote.letter {
+        letters.rotateLeft(positions: 1)
+    }
+    
+    return zip(letters, pitches).map { r in
+        var a = (r.1 - r.0.rawValue)
+        while a >= 12 {
+            a -= 12
+        }
+        if a > 3 {
+            a -= 12
+        }
+        return MusicalNote(letter: r.0, accidentals: a)
+    }
+}
+
+func chromatic_triads_in_key(key: MusicalKey) -> [[MusicalTriad]] {
+    let rootNote = key.rootNote
+    let notes = key.modality == .major ? notes_in_major_key(rootNote: rootNote) : notes_in_minor_key(rootNote: rootNote)
     
     let major: (Modality, Modality) = (.major, .minor)
     let minor: (Modality, Modality) = (.minor, .major)
+    
     let diminished: (Modality, Modality) = (.diminished, .minor)
     
     
-    let modalities: [(Modality, Modality)] = [major, minor, minor, major, major, minor, diminished]
+    let modalities: [(Modality, Modality)]
+    
+    if key.modality == .major {
+        modalities = [major, minor, minor, major, major, minor, diminished]
+    } else {
+        modalities = [minor, diminished, major, minor, minor, major, major]
+    }
     
     return zip(notes, modalities).map { r in
         [

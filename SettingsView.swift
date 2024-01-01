@@ -4,7 +4,9 @@ struct SettingsModel {
     var selectedRoot: MusicalNote = MusicalKey.defaultKey.rootNote
     var tonality: Modality = .major
     
-    var showDiminishedInMajor: Bool = false
+    var shouldShowDiminishedInMajor: Bool = true
+    var shouldShowSecondRow: Bool = false
+
     
     var selectedKey: MusicalKey {
         MusicalKey(rootNote: selectedRoot, modality: tonality)
@@ -27,9 +29,9 @@ struct Settings: View {
                 Text("Major").tag(Modality.major)
                 Text("Minor").tag(Modality.minor)
             }
-//            if model.tonality == .major {
-//                Toggle("Show diminished chord", isOn: $model.showDiminishedInMajor)
-//            }
+            Toggle("Show non-diatonic chords in second row", isOn: $model.shouldShowSecondRow)
+            Toggle("Show diminished chord (vii°) in major", isOn: $model.shouldShowDiminishedInMajor)
+
         }
     }
 }

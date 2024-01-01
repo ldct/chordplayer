@@ -30,7 +30,7 @@ struct ContentView: View {
 
     let piano = PianoSound()
 
-    func makeButton(_ triad: MusicalTriad, height: CGFloat) -> some View  {
+    func makeButton(rubyText: String, triad: MusicalTriad, height: CGFloat) -> some View  {
         let ret = Button(action: {
             if currentTriad == triad {
                 currentTriad = nil
@@ -38,10 +38,13 @@ struct ContentView: View {
                 currentTriad = triad
             }
         }) {
-            Text(triad.debugDescription)
-                .frame(width: 80, height: height)
-                .background((triad == currentTriad ? .green : .yellow))
-                .cornerRadius(5)
+            VStack {
+                Text(rubyText).font(.caption2)
+                Text(triad.debugDescription)
+                    .frame(width: 80, height: height)
+                    .background((triad == currentTriad ? .green : .yellow))
+                    .cornerRadius(5)
+            }
         }
         return ret
     }
@@ -58,21 +61,36 @@ struct ContentView: View {
                     .navigationDestination(for: String.self) { value in
                         Settings(model: $settings)
                     }
-                Toggle("", isOn: $keyChangeAllowed)
-
-            }
-
-            HStack {
-                ForEach(chords.indices) { idx in
-                    let chord_pair = chords[idx]
-                    makeButton(chord_pair[0], height: 40)
+                Spacer()
+                VStack {
+                    let lockIndicator: String = keyChangeAllowed ? "" : "🔒"
+                    Text("current key: \(settings.selectedKey.toString) \(lockIndicator)").font(.body)
+                    let text: String = keyChangeAllowed ? "(double-click piano to change key)" : "(tap here to change key)"
+                    Text(text).font(.caption2)
+                }.onTapGesture {
+                    keyChangeAllowed = !keyChangeAllowed
                 }
             }
             
             HStack {
                 ForEach(chords.indices) { idx in
                     let chord_pair = chords[idx]
-                    makeButton(chord_pair[1], height: 20)
+                    if settings.selectedKey.modality == .major, chord_pair[0].modality == .diminished {
+                        if settings.shouldShowDiminishedInMajor  {
+                            makeButton(rubyText: " ", triad: chord_pair[0], height: 40)
+                        }
+                    } else {
+                        let rubyText = idx == 3 ? "IV" : (idx == 4 ? "V" : " ")
+                        makeButton(rubyText: rubyText, triad: chord_pair[0], height: 40)
+                    }
+                }
+            }
+            if settings.shouldShowSecondRow {
+                HStack {
+                    ForEach(chords.indices) { idx in
+                        let chord_pair = chords[idx]
+                        makeButton(rubyText: "", triad: chord_pair[1], height: 20)
+                    }
                 }
             }
             PianoView(selectedRoot: $settings.selectedRoot, keyChangeAllowed: $keyChangeAllowed)

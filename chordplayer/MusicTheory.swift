@@ -152,7 +152,7 @@ func chromatic_triads_in_key(key: MusicalKey) -> [[MusicalTriad]] {
 enum Modality: String {
     case major = ""
     case minor = "m"
-    case diminished = "dim"
+    case diminished = "°"
 }
 
 struct MusicalKey: Hashable, Identifiable {
